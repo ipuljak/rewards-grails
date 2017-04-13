@@ -18,4 +18,8 @@ class InventoryController {
     def remove() {
         render "You have selected remove."
     }
+
+    def list() {
+        def allProducts = Product.list()
+    }
 }
