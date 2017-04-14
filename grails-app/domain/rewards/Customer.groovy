@@ -7,8 +7,8 @@ class Customer {
     String email
     Integer totalPoints
 
-    Set awards = []
-    Set xorders = []
+    // Set awards = []
+    // Set xorders = []
 
     static hasMany = [awards:Award, xorders:Xorder]
 

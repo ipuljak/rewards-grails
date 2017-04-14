@@ -1,11 +1,11 @@
 package rewards
 
-class Order {
+class Xorder {
     Date orderDate
 	Integer orderNumber
 	Float orderTotal
 
-    Set orderItems = []
+    //Set orderItems = []
 
     static belongsTo = [customer:Customer]
     static hasMany = [orderItems:OrderItem]
