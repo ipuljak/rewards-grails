@@ -21,5 +21,6 @@ class InventoryController {
 
     def list() {
         def allProducts = Product.list()
+        [allProducts:allProducts]
     }
 }
