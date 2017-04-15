@@ -3,6 +3,8 @@ package rewards
 class CustomerController {
     static scaffold = true
 
+    def calculationsService
+
     def lookup() {
         // querying a list of customers
         // def customerInstance = Customer.list(sort: "lastName", order: "desc", max: 5, offset: 5)
@@ -25,6 +27,14 @@ class CustomerController {
         def customerInstance = Customer.findAllByFirstNameIlikeAndTotalPointsGreaterThanEquals("B%", 3)
         
         [customerInstanceList:customerInstance]
+    }
+
+    def customerLookup(Customer lookupInstance) {
+        // creates two variables that will be populated by our service
+        def (customerInstance, welcomeMessage) = calculationsService.processCheckin(lookupInstance)
+
+        // need to send this info to checkin.gsp but checkin() function is empty so use render
+        render(view: "checkin", model: [customerInstance: customerInstance, welcomeMessage: welcomeMessage])
     }
 
     def checkin() {
@@ -56,6 +66,10 @@ class CustomerController {
 
     def show(Long id) {
         def customerInstance = Customer.get(id)
+
+        // calculate the total points using the service
+        customerInstance = calculationsService.getTotalPoints(customerInstance)
+
         [customerInstance: customerInstance]
     }
 
@@ -79,5 +93,16 @@ class CustomerController {
         def customerInstance = Customer.get(id)
         customerInstance.delete(flush: true)
         redirect(action: "index")
+    }
+
+    // create a profile view for the user
+    def profile() {
+        def customerInstance = Customer.findByPhone(params.id)
+        [customerInstance: customerInstance]
+    }
+
+    def updateProfile(Customer customerInstance) {
+        customerInstance.save(flush: true)
+        render(view: "profile", model: [customerInstance: customerInstance])
     }
 }
